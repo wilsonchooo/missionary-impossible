@@ -29,6 +29,12 @@ public class Enemy : MonoBehaviour
         render = gameObject.GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
 
+
+           
+        StartCoroutine(Phase1());
+
+
+
     }
 
     // Update is called once per frame
@@ -45,11 +51,10 @@ public class Enemy : MonoBehaviour
             seconds = 0;
             switchState = !switchState;
         }
-
         stateMachine.Update();
 
+       
 
-        
         if (health == 1)
             render.color = new Color(255, 0, 0);
         if (health == 0)
@@ -79,6 +84,42 @@ public class Enemy : MonoBehaviour
     {
         Debug.Log("enemyshooting");
         Instantiate(bulletPrefab, EnemyFirePoint.position, EnemyFirePoint.rotation);
+    }
+
+    IEnumerator Phase1()
+    {
+        while (health > 40)
+        {
+            shoot();
+            yield return new WaitForSeconds(3);
+            render.color = new Color(0, 0, 255);
+        }
+
+        yield return StartCoroutine(Phase2());
+
+
+       
+    
+    }
+    IEnumerator Phase2()
+    {
+        while (health <= 40 && health >20)
+        {
+            shoot();
+            yield return new WaitForSeconds(2);
+            render.color = new Color(0, 255, 0);
+        }
+        yield return StartCoroutine(Phase3());
+    }
+
+    IEnumerator Phase3()
+    {
+        while (health <= 20)
+        {
+            shoot();
+            yield return new WaitForSeconds(0);
+            render.color = new Color(0, 255, 255);
+        }
     }
 }
     
