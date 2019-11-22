@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [System.Serializable]
     public class PlayerStats
     {
-        public int Health = 2;
+        public int Health = 5;
 
     }
     public PlayerStats stats = new PlayerStats();
@@ -51,8 +51,6 @@ public class Player : MonoBehaviour
 
 
 
-
-
         /*
         if (enemies.Length != 0)
         {
@@ -77,10 +75,6 @@ public class Player : MonoBehaviour
         */
 
 
-        if (playercollider.IsTouching(GameObject.FindGameObjectWithTag("Enemy").GetComponent<Collider2D>()))
-        {
-
-        }
 
 
 
@@ -88,16 +82,19 @@ public class Player : MonoBehaviour
 
         //Debug.Log(GetClosestEnemy(enemytransform));
         closestenem = FindClosestEnemy();
-        if (playercollider.IsTouching(closestenem.GetComponent<Collider2D>()))
+        if (closestenem!=null)
         {
-            Debug.Log("yeet");
-            touchenemy();
-            StartCoroutine(iframes());
+            if (playercollider.IsTouching(closestenem.GetComponent<Collider2D>()))
+            {
+                Debug.Log("yeet");
+                touchenemy();
+                StartCoroutine(iframes());
+            }
         }
         if (closestenem != null)
         {
             distdash = Vector3.Distance(transform.position, closestenem.transform.position);
-            Debug.Log(distdash);
+            //Debug.Log(distdash);
             dash();
         }
         dropbox();
@@ -108,7 +105,9 @@ public class Player : MonoBehaviour
 
     public void DamagePlayer(int dmg)
     {
-        stats.Health -= dmg;
+
+        stats.Health = stats.Health - dmg;
+        Debug.Log(stats.Health + " health left");
         if (stats.Health <= 0)
         {
             Debug.Log("Kill Player");
@@ -193,7 +192,7 @@ public class Player : MonoBehaviour
 
         else
         {
-            DamagePlayer(2);
+            DamagePlayer(1);
             Debug.Log("Game Over");
         }
     
@@ -242,7 +241,7 @@ public class Player : MonoBehaviour
             }
             
         }
-        Debug.Log(closestEnemy);
+        //Debug.Log(closestEnemy);
         return closestEnemy;
 
         
